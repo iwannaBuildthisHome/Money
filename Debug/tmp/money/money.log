@@ -1,0 +1,6 @@
+﻿  money.cpp
+c:\users\danti\desktop\b9_money\money\money.cpp(85): warning C4244: return: преобразование "const long double" в "int", возможна потеря данных
+c:\users\danti\desktop\b9_money\money\money.cpp(90): warning C4244: return: преобразование "const long double" в "int", возможна потеря данных
+c:\users\danti\desktop\b9_money\money\money.cpp(235): warning C4717: Money::operator/=: рекурсия на всех путях выполнения, функция вызовет переполнение стека
+c:\users\danti\desktop\b9_money\money\money.cpp(234): warning C4172: возвращение адреса локальной или временной переменной : result
+  money.vcxproj -> C:\Users\danti\Desktop\b9_money\money\..\Debug\bin\money\money.exe
