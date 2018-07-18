@@ -86,6 +86,7 @@
     <ClInclude Include="..\common\testslib.hpp" />
     <ClInclude Include="..\common\utils.hpp" />
     <ClInclude Include="money.hpp" />
+    <ClInclude Include="rounding-algorithms.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="money.cpp" />

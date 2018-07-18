@@ -6,7 +6,8 @@
 /*****************************************************************************/
 #include <string>
 #include <stdexcept>
-
+#include <cmath>
+#include <math.h>
 
 class Money
 {
@@ -18,7 +19,6 @@ private:
 public:
 	Money();
 	Money(int dollar, int cent);
-	/*Money(char * str , char _symbol);*/
 	Money(std::string str);
 	Money(long double number);
 
@@ -37,7 +37,8 @@ public:
 	Money operator + (Money m) const;
 	Money operator - (Money m) const;
 	Money operator * (Money m) const;
-	Money operator / (Money m) const;
+	Money Money::operator * (int m) const;
+	Money Money::operator / (int m) const;
 
 	Money & operator += (Money m);
 	Money & operator -= (Money m);

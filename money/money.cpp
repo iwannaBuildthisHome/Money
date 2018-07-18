@@ -9,7 +9,7 @@
 #include <ctgmath>
 #include <sstream>
 #include <fstream>
-
+#include <cmath>
 
 using namespace std;
 
@@ -33,8 +33,8 @@ bool Money::isValid( int _cent) const
 }
 Money::Money() {
 
-	m_Dollar = 0;
-	m_Cent = 0;
+	m_Dollar = 0.0;
+	m_Cent = 0.0;
 }
 Money::Money(int dollar, int cent) {
 	if (!isValid(cent))
@@ -61,60 +61,52 @@ Money::Money(std::string str)
 	this->m_Cent = m_Cent;
 }
 
-//Money::Money(char * str, char _symbol)
-//{
-//	char sym1;
-//	int nMatched = sscanf(str, "%d%c%d", &m_Dollar, &sym1, &m_Cent);
-//	if (nMatched != 2 || sym1 != _symbol)
-//		throw std::logic_error("Incorrect money format");
-//}
 Money::Money(long double number) 
-{
+{   
 	long double fractpart, intPart;
 	fractpart = modf(number, &intPart);
-	m_Dollar = intPart;
-	m_Cent = (fractpart*100);
+	m_Dollar = intPart; 
+	m_Cent = (0.2+(fractpart*100)) ;
 	if (m_Dollar < 0.0)
-		m_Cent = m_Cent*(-1);
-	m_Cent += 0.5;
+	{
+		m_Cent = m_Cent * (-1);
+		m_Cent += 0.5;
+	}
 }
 
 int Money::getDollars()const
 {
-	//int value = this->m_Dollar;
-	return m_Dollar;
+	int value = this->m_Dollar;
+	return this->m_Dollar;
 }
 int Money::getCents()const
 {
-	//int value = this->m_Cent;
-	return m_Cent;
+	int value = this->m_Cent;
+	return value;
 }
 
 const char * Money::asString()
 {
-	/*char buff[30];
-	int count = sprintf(buff, "%d.%d", m_Dollar, m_Cent);
-	cout << buff << endl;
-	return  buff;*/
-	
-	/*static char tempBuf[6];
-	sprintf(tempBuf, "%d.%d", m_Dollar, m_Cent);
-	return tempBuf;*/
 	ostringstream ss;
 	ss << this->m_Dollar << ".";
+
 	if (m_Cent < 10)
+	{
 		ss << "0";
-	ss << m_Cent;
+	    ss << m_Cent;
+    }
+	else
+	{
+		int cent;
+		cent = static_cast<int>(m_Cent);
+		ss << cent;
+	}
+	//cout << cstr << endl;
 	char * cstr = new char[ss.str().length() + 1];
 	strcpy(cstr, ss.str().c_str());
-
-	cout << cstr << endl;
 	return cstr;
 }
 
-	
-
-	
 
 bool Money::operator == (Money m) const {
 
@@ -158,26 +150,40 @@ bool Money::operator >= (Money m) const {
 }
 
 Money Money::operator + (Money m) const {
-	//Money result = *this;
-	//result += m;
-	//return result;
 	Money result;
 	result.m_Dollar = m_Dollar + m.getDollars();
 	result.m_Cent = m_Cent + m.getCents();
 	return result;
 }
 
+Money Money::operator * (int m) const {
+	long double dollar, cent, res;
+	dollar = m_Dollar;
+	cent = m_Cent;
+	res = (((dollar + (cent / 100)) * 100)*m)/100;
+	cent = std::modf(res, &dollar);
+	cent = (cent * 100) + 0.5;
+
+	return Money(dollar, cent); 
+}
+	
 Money Money::operator * (Money m) const {
 	Money result = *this;
 	result *= m;
 	return result;
-	/*return m_Dollar * m.getDollars() +
-	       m_Cent * m.getCents();*/
 
 }
-Money Money::operator / (Money m) const {
-	return m_Dollar / m.getDollars() +
-		m_Cent / m.getCents();
+Money Money::operator / (int m) const {
+	long double dollar, cent, res;
+	dollar = m_Dollar;
+	cent = m_Cent;
+	res = (((dollar + (cent / 100)) * 100) / m) / 100;
+	if (m == 0)
+		throw std::logic_error("Division by zero");
+	cent = std::modf(res, &dollar);
+	cent = (cent * 100) + 0.5;
+
+	return Money(dollar, cent);
 }
 
 Money & Money::operator += (Money m) {
@@ -186,64 +192,71 @@ Money & Money::operator += (Money m) {
 	return *this;
 }
 Money Money::operator - (Money m) const {
-	//return Money(*this) -= m;
-	//Money result = *this;
-	//result -= m;
-	//return result;
 
-	//Money result(m_Dollar - m.getDollars();
-	//	m_Cent - m.getCents());
-	//return result;
+	int dollar = this->m_Dollar;
+	int cent = this->m_Cent;
+	if (this->m_Cent < m.getCents()) {
+		if (this->m_Dollar < m.getDollars() && this->m_Cent < m.getCents())
+		{
+			dollar = dollar - m.getDollars();
+			cent = cent - m.getCents();
+			cent = cent * (-1);
+			return Money(dollar, cent);
+		}
 
-	Money result;
-	Money res;
-	result.m_Dollar = this->m_Dollar - m.getDollars();
-		result.m_Cent =  this->m_Cent - m.getCents() ;
-		
-		if (result.m_Cent < 0 && result.m_Dollar>0)
-		res = result.m_Dollar + (result.m_Cent*0.01);
-		return res;
-		
-	//	
-	//return result;
-
-	
-
-	/*Money result(m_Dollar - m.getDollars() +
-		m_Cent - m.getCents());
-	return result;*/
-	//return(m_Dollar - m.getDollars(),
-	//	m_Cent - m.getCents());
-	//
+		dollar -= 1;
+		cent += 100;
+	}
+	dollar = dollar - m.getDollars();
+	cent = cent - m.getCents();
+	return Money(dollar, cent);
 }
+	
 Money & Money::operator -= (Money m) {
-	/**this = *this - m;
-	return *this;*/
-
-	/*m_Dollar += m.getDollars();
-	m_Cent += m.getCents();
-	return *this;*/
-
 	Money temp = *this - m;
 	*this = temp;
 	return *this;
 }
 Money & Money::operator /= (Money m) {
-	Money result = *this;
-	result /= m;
-	return result;
+	long double dollar, cent, MoneyBefore;
+	dollar = m_Dollar;
+	cent = m_Cent;
+	if (dollar == 0)
+	{
+		MoneyBefore = ((cent * 100) / m.getDollars())/1000;
+		if (m.getDollars() == 0)
+			throw std::logic_error("Division by zero");
+		cent = std::modf(MoneyBefore, &dollar);
+		cent = (cent * 10);
+		m_Cent = cent;
+		m_Dollar = dollar;
+		return *this;
+
+	}
+	MoneyBefore = (((dollar + (cent / 100)) * 100) / m.getDollars()) / 100;
+	if (m.getDollars() == 0)
+		throw std::logic_error("Division by zero");
+	cent = std::modf(MoneyBefore, &dollar);
+	cent = (cent * 100)+ 0.5;
+	m_Cent = cent;
+	m_Dollar = dollar;
+	return *this;
+	
 }
 Money & Money::operator *= (Money m) {
-	m_Dollar *= m.getDollars();
-	m_Cent *= m.getCents();
-	return *this;
-	/*Money result = *this;
-	result *= m;
-	return result;*/
-}
 
-Money operator "" _USD(long double) {
-	return Money();
+	long double dollar, cent;
+	dollar = m_Dollar;
+	cent = m_Cent;
+	long double MoneyBefore = (m.getDollars() *(cent + 1000)) / 100;
+	cent = std::modf(MoneyBefore, &dollar);
+	cent = cent * 100;
+	m_Cent = cent;
+	m_Dollar = dollar;
+	return *this;
+}
+    Money operator "" _USD(long double money) {
+		return Money(money);
 }
 
 

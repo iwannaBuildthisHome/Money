@@ -21,6 +21,7 @@
     <ClInclude Include="money.hpp">
       <Filter>Student Class</Filter>
     </ClInclude>
+    <ClInclude Include="rounding-algorithms.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="money_test.cpp">

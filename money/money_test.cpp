@@ -252,38 +252,76 @@ DECLARE_OOP_TEST( money_test_relational_operators )
 /*****************************************************************************/
 
 
-DECLARE_OOP_TEST( money_test_add_subtract )
+//DECLARE_OOP_TEST( money_test_add_subtract )
+//{
+//	Money m1( 10, 30 );
+//	m1 += Money( 0, 20 );
+//	assert( m1.getDollars() == 10 );
+//	assert( m1.getCents() == 50 );
+//
+//	Money m2 = m1 + Money( 10, 25 );
+//	assert( m2.getDollars() == 20 );
+//	assert( m2.getCents() == 75 );
+//	assert( m1.getDollars() == 10 );
+//	assert( m1.getCents() == 50 );
+//
+//	m1 -= Money( 10, 00 );
+//	assert( m1.getDollars() == 0 );
+//	assert( m1.getCents() == 50 );
+//
+//	m2 = m1 - Money( 0, 10 );
+//	assert( m2.getDollars() == 0 );
+//	assert( m2.getCents() == 40 );
+//	assert( m1.getDollars() == 0 );
+//	assert( m1.getCents() == 50 );
+//
+//	Money m3( 1, 2 );
+//	m3 -= Money( 0, 10 );
+//	assert( m3.getDollars() == 0 );
+//	assert( m3.getCents() == 92 );
+//
+//	Money m4( 0, 10 );
+//	m4 -= Money( 1, 50 );
+//	assert( m4.getDollars() == -1 );
+//	assert( m4.getCents() == 40 );
+//}
+DECLARE_OOP_TEST(money_test_add_subtract)//modification HOST
 {
-	Money m1( 10, 30 );
-	m1 += Money( 0, 20 );
-	assert( m1.getDollars() == 10 );
-	assert( m1.getCents() == 50 );
+	Money m1(10, 30);
+	m1 += Money(0, 20);
+	assert(m1.getDollars() == 10);
+	assert(m1.getCents() == 50);
 
-	Money m2 = m1 + Money( 10, 25 );
-	assert( m2.getDollars() == 20 );
-	assert( m2.getCents() == 75 );
-	assert( m1.getDollars() == 10 );
-	assert( m1.getCents() == 50 );
+	Money m2 = m1 + Money(10, 25);
+	assert(m2.getDollars() == 20);
+	assert(m2.getCents() == 75);
+	assert(m1.getDollars() == 10);
+	assert(m1.getCents() == 50);
 
-	m1 -= Money( 10, 00 );
-	assert( m1.getDollars() == 0 );
-	assert( m1.getCents() == 50 );
+	m1 -= Money(10, 00);
+	assert(m1.getDollars() == 0);
+	assert(m1.getCents() == 50);
 
-	m2 = m1 - Money( 0, 10 );
-	assert( m2.getDollars() == 0 );
-	assert( m2.getCents() == 40 );
-	assert( m1.getDollars() == 0 );
-	assert( m1.getCents() == 50 );
+	m2 = m1 - Money(0, 10);
+	assert(m2.getDollars() == 0);
+	assert(m2.getCents() == 40);
+	assert(m1.getDollars() == 0);
+	assert(m1.getCents() == 50);
 
-	Money m3( 1, 2 );
-	m3 -= Money( 0, 10 );
-	assert( m3.getDollars() == 0 );
-	assert( m3.getCents() == 92 );
+	Money m3(1, 2);
+	m3 -= Money(0, 10);
+	assert(m3.getDollars() == 0);
+	assert(m3.getCents() == 92);
 
-	Money m4( 0, 10 );
-	m4 -= Money( 1, 50 );
-	assert( m4.getDollars() == -1 );
-	assert( m4.getCents() == 40 );
+	Money m4(0, 10);
+	m4 -= Money(1, 50);
+	assert(m4.getDollars() == -1);
+	assert(m4.getCents() == 40);
+
+	Money m5(4, 70);
+	m5 -= Money(1, 80);
+	assert(m5.getDollars() == 2);
+	assert(m5.getCents() == 90);
 }
 
 
@@ -301,12 +339,19 @@ DECLARE_OOP_TEST( money_test_multiply_divide )
 	m2 *= 5;
 	assert( m2.getDollars() == 52 );
 	assert( m2.getCents() == 50 );
+	
 
 	Money m3 = m1 * 2;
 	assert( m3.getDollars() == 61 );
 	assert( m3.getCents() == 20 );
 	assert( m1.getDollars() == 30 );
 	assert( m1.getCents() == 60 );
+	
+	/*Money m3 = m1 * 3;
+	assert(m3.getDollars() == 91);
+	assert(m3.getCents() == 80);
+	assert(m1.getDollars() == 30);
+	assert(m1.getCents() == 60);*/
 
 	Money m4 = m1 / 2;
 	assert( m4.getDollars() == 15 );
@@ -327,6 +372,10 @@ DECLARE_OOP_TEST( money_test_multiply_divide )
 	m6 /= 2;
 	assert( m6.getDollars() == 0 );
 	assert( m6.getCents() == 50 );
+	/*Money m6(1, 0);
+	m6 /= 10;
+	assert(m6.getDollars() == 0);
+	assert(m6.getCents() == 1);*/
 
 	Money m7;
 	m7 / 2;
